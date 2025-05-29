@@ -1,9 +1,13 @@
 """LLM Auditor for verifying & refining LLM-generated answers using the web."""
+import os
+import requests
+import json
 
 from google.adk.agents import SequentialAgent
 
 from .sub_agents.critic import critic_agent
 from .sub_agents.reviser import reviser_agent
+from .sub_agents.wiz import WizQueryAgent()
 
 
 llm_auditor = SequentialAgent(
@@ -11,7 +15,66 @@ llm_auditor = SequentialAgent(
     description=(
         'You are a security analytics and want to monitor all the commands that are passed to the LLM. We want to make it really safe and no credentials are passed to the LLM'
     ),
-    sub_agents=[critic_agent, reviser_agent],
+    # sub_agents=[critic_agent, reviser_agent],
+    sub_agents =[WizQueryAgent,critic_agent, reviser_agent]
 )
 
 root_agent = llm_auditor
+
+if __name__ == "__main__":
+    # IMPORTANT: Ensure WIZ_CLIENT_ID and WIZ_CLIENT_SECRET are set in your environment
+    # export WIZ_CLIENT_ID="your_actual_client_id"
+    # export WIZ_CLIENT_SECRET="your_actual_client_secret"
+    
+    if not os.environ.get("WIZ_CLIENT_ID") or not os.environ.get("WIZ_CLIENT_SECRET"):
+        print("FATAL: WIZ_CLIENT_ID and WIZ_CLIENT_SECRET environment variables are not set.")
+        print("Please set them before running the script, e.g.:")
+        print("  export WIZ_CLIENT_ID=\"d3i2kqkz65d6tktv4rytwuyxoz5nhwedvzefuwfvgdoivpaabe7xg\"")
+        print("  export WIZ_CLIENT_SECRET=\"8NzpglyRIi89gHv0IXkippfdmRYjZbhBGly4nHoszfHjB9AQByO33l2KNU8FCHTt\"")
+    else:
+        print("Starting LLM Auditor agent example with Wiz integration...")
+        
+        # Initial input for the agent sequence
+        # This could be the command intended for an LLM, or context about it.
+        initial_llm_interaction_context = {
+            "llm_command_text": "Summarize recent critical vulnerabilities in our cloud environment.",
+            "user_context": {"department": "security_operations"},
+            "target_llm_params": {"model": "some_llm_vNext"}
+        }
+        
+        # Example of passing specific query instructions to WizQueryAgent via kwargs
+        # This demonstrates flexibility if the default query in WizQueryAgent is not sufficient.
+        custom_wiz_query_for_run = {
+             "query": """
+                query SpecificAssetVulnerabilities($assetId: ID!, $severity: [Severity!]) {
+                  asset(id: $assetId) {
+                    id
+                    name
+                    operatingSystem
+                    vulnerabilities(filterBy: {severity: $severity, status: [OPEN]}, first: 25) {
+                      nodes { id name severity }
+                    }
+                  }
+                }
+            """,
+            "variables": {
+                "assetId": "wiz_asset_id_123", # Replace with a real or dynamically determined asset ID
+                "severity": ["CRITICAL", "HIGH"]
+            }
+        }
+        
+        print(f"\nRunning LLM Auditor with initial context: {initial_llm_interaction_context}\n")
+        
+        # When llm_auditor is called, WizQueryAgent will be the first sub-agent.
+        # It will modify 'initial_llm_interaction_context' by adding a 'wiz_findings' key.
+        # You can pass kwargs that WizQueryAgent might use:
+        final_result = root_agent(
+            initial_llm_interaction_context,
+            # Optional: override WizQueryAgent's default query for this run
+            # wiz_query_payload=custom_wiz_query_for_run, 
+            # wiz_endpoint="/graphql", 
+            # wiz_method="POST"
+        ) 
+        
+        print(f"\n--- LLM Auditor Final Result ---")
+        print(json.dumps(final_result, indent=2))
