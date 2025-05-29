@@ -16,7 +16,7 @@ llm_auditor = SequentialAgent(
     description=(
         'You are a security analytics and want to monitor all the commands that are passed to the LLM. We want to make it really safe and no credentials are passed to the LLM'
     ),
-    #sub_agents=[critic_agent, reviser_agent],
+    # sub_agents=[critic_agent, reviser_agent],
     sub_agents =[critic_agent, reviser_agent,wiz_agent_instance]
     # sub_agents =[wiz_agent_instance,critic_agent, reviser_agent, device42_agent]
 )
