@@ -4,10 +4,11 @@ import requests
 import json
 
 from google.adk.agents import SequentialAgent
+from google.adk.agents import ParallelAgent, LlmAgent
 
 from .sub_agents.critic import critic_agent
 from .sub_agents.reviser import reviser_agent
-from .sub_agents.wiz import WizQueryAgent()
+from .sub_agents.wiz import wiz_agent_instance
 
 
 llm_auditor = SequentialAgent(
@@ -15,8 +16,9 @@ llm_auditor = SequentialAgent(
     description=(
         'You are a security analytics and want to monitor all the commands that are passed to the LLM. We want to make it really safe and no credentials are passed to the LLM'
     ),
-    # sub_agents=[critic_agent, reviser_agent],
-    sub_agents =[WizQueryAgent,critic_agent, reviser_agent]
+    #sub_agents=[critic_agent, reviser_agent],
+    sub_agents =[critic_agent, reviser_agent,wiz_agent_instance]
+    # sub_agents =[wiz_agent_instance,critic_agent, reviser_agent, device42_agent]
 )
 
 root_agent = llm_auditor
@@ -42,39 +44,3 @@ if __name__ == "__main__":
             "target_llm_params": {"model": "some_llm_vNext"}
         }
         
-        # Example of passing specific query instructions to WizQueryAgent via kwargs
-        # This demonstrates flexibility if the default query in WizQueryAgent is not sufficient.
-        custom_wiz_query_for_run = {
-             "query": """
-                query SpecificAssetVulnerabilities($assetId: ID!, $severity: [Severity!]) {
-                  asset(id: $assetId) {
-                    id
-                    name
-                    operatingSystem
-                    vulnerabilities(filterBy: {severity: $severity, status: [OPEN]}, first: 25) {
-                      nodes { id name severity }
-                    }
-                  }
-                }
-            """,
-            "variables": {
-                "assetId": "wiz_asset_id_123", # Replace with a real or dynamically determined asset ID
-                "severity": ["CRITICAL", "HIGH"]
-            }
-        }
-        
-        print(f"\nRunning LLM Auditor with initial context: {initial_llm_interaction_context}\n")
-        
-        # When llm_auditor is called, WizQueryAgent will be the first sub-agent.
-        # It will modify 'initial_llm_interaction_context' by adding a 'wiz_findings' key.
-        # You can pass kwargs that WizQueryAgent might use:
-        final_result = root_agent(
-            initial_llm_interaction_context,
-            # Optional: override WizQueryAgent's default query for this run
-            # wiz_query_payload=custom_wiz_query_for_run, 
-            # wiz_endpoint="/graphql", 
-            # wiz_method="POST"
-        ) 
-        
-        print(f"\n--- LLM Auditor Final Result ---")
-        print(json.dumps(final_result, indent=2))
