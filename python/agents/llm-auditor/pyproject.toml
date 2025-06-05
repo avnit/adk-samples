@@ -2,12 +2,6 @@
 name = "llm-auditor"
 version = "0.1.0"
 description = "The LLM Auditor evaluates LLM-generated answers, verifies actual accuracy using the web, and refines the response to ensure alignment with real-world knowledge."
-authors = [
-    { name = "Chun-Sung Ferng", email = "csferng@google.com" },
-    { name = "Cyrus Rashtchian", email = "cyroid@google.com" },
-    { name = "Da-Cheng Juan", email = "dacheng@google.com" },
-    { name = "Ivan Kuznetsov", email = "ivanku@google.com" },
-]
 license = "Apache License 2.0"
 readme = "README.md"
 
