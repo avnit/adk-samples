@@ -1,55 +1,75 @@
-# Agent Development Kit (ADK) Samples
+# Agent Development Kit (ADK) Sample Agents
 
-[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+This repository provides ready-to-use sample agents built on top of the Python [Agent Development Kit (ADK)](https://github.com/google/adk-python). These agents demonstrate a range of use cases and complexities, from fact-checking LLM outputs to retrieval-augmented generation and cloud security integrations.
 
-<img src="https://github.com/google/adk-docs/blob/main/docs/assets/agent-development-kit.png" alt="Agent Development Kit Logo" width="150">
+## Repository Structure
 
-Welcome to the ADK Sample Agents repository! This collection provides ready-to-use agents built on top of the [Agent Development Kit](https://google.github.io/adk-docs/), designed to accelerate your development process. These agents cover a range of common use cases and complexities, from simple conversational bots to complex multi-agent workflows.
-
-## ✨ Getting Started 
-This repo contains ADK sample agents for both **Python** and **Java.** Navigate to the **[Python](python/)** and **[Java](java/)** subfolders to see language-specific setup instructions, and learn more about the available sample agents. 
-
-To learn more, check out the [ADK Documentation](https://google.github.io/adk-docs/), and the GitHub repositories for [ADK Python](https://github.com/google/adk-python) and [ADK Java](https://github.com/google/adk-java). 
-
-## 🌳 Repository Structure
-```bash
-├── java
-│   ├── agents
-│   │   ├── software-bug-assistant
-│   │   └── time-series-forecasting
-│   └── README.md
-├── python
-│   ├── agents
-│   │   ├── academic-research
-│   │   ├── brand-search-optimization
-│   │   ├── customer-service
-│   │   ├── data-science
-│   │   ├── financial-advisor
-│   │   ├── fomc-research
-│   │   ├── llm-auditor
-│   │   ├── marketing-agency
-│   │   ├── personalized-shopping
-│   │   ├── RAG
-│   │   ├── README.md
-│   │   └── travel-concierge
-│   └── README.md
-└── README.md
+```
+adk-samples/
+├── python/
+│   ├── agents/
+│   │   ├── llm-auditor/   # Automated fact-checking agent for LLM outputs
+│   │   ├── RAG/           # Retrieval-Augmented Generation agent
+│   │   └── wiz/wiz-mcp/   # Model Context Protocol server for Wiz cloud security
+│   └── README.md          # Python samples overview
+└── README.md              # (This file)
 ```
 
-## ℹ️ Getting help
+Each agent directory contains its own `README.md` with detailed setup and usage instructions.
 
-If you have any questions or if you found any problems with this repository, please report through [GitHub issues](https://github.com/google/adk-samples/issues).
+## Sample Agents
 
-## 🤝 Contributing
+### 1. LLM Auditor
+- **Purpose:** Automated fact-checking layer for LLM responses. Identifies factual claims, verifies them using web search and internal knowledge, and can rewrite responses to correct inaccuracies.
+- **Location:** `python/agents/llm-auditor/`
+- **Features:** Multi-agent workflow, Google Search integration, detailed audit reports.
+- **[See detailed instructions](python/agents/llm-auditor/README.md)**
 
-We welcome contributions from the community! Whether it's bug reports, feature requests, documentation improvements, or code contributions, please see our [**Contributing Guidelines**](https://github.com/google/adk-samples/blob/main/CONTRIBUTING.md) to get started.
+### 2. Documentation Retrieval Agent (RAG)
+- **Purpose:** Answers questions about documents uploaded to Vertex AI RAG Engine using Retrieval-Augmented Generation. Provides answers with citations to source documents.
+- **Location:** `python/agents/RAG/`
+- **Features:** RAG with Vertex AI, citation support, document upload and management scripts.
+- **[See detailed instructions](python/agents/RAG/README.md)**
 
-## 📄 License
+### 3. Wiz MCP Server
+- **Purpose:** Model Context Protocol (MCP) server for the Wiz cloud security platform. Integrates with Wiz API and can be run locally or in Docker.
+- **Location:** `python/agents/wiz/wiz-mcp/`
+- **Features:** API credential management, Docker support, integration with AI assistants.
+- **[See detailed instructions](python/agents/wiz/wiz-mcp/README.md)**
 
-This project is licensed under the Apache 2.0 License - see the [LICENSE](https://github.com/google/adk-samples/blob/main/LICENSE) file for details.
+## Getting Started
 
-## Disclaimers
+1. **Prerequisites**
+   - Python 3.9+ (see agent-specific requirements)
+   - [Poetry](https://python-poetry.org/docs/) for dependency management
+   - Google Cloud account (for most agents)
+   - Agent-specific credentials (see each agent's README)
 
-This is not an officially supported Google product. This project is not eligible for the [Google Open Source Software Vulnerability Rewards Program](https://bughunters.google.com/open-source-security).
+2. **Clone the Repository**
+   ```bash
+   git clone https://github.com/google/adk-samples.git
+   cd adk-samples/python
+   ```
 
-This project is intended for demonstration purposes only. It is not intended for use in a production environment.
+3. **Explore the Agents**
+   - Navigate to the `agents/` directory.
+   - Each agent has its own subdirectory and `README.md`.
+
+4. **Run an Agent**
+   - Follow the instructions in the agent's `README.md` for setup, configuration, and running the agent (usually with Poetry and the ADK CLI or web interface).
+
+## Contributing
+
+We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
+
+## License
+
+This project is licensed under the Apache 2.0 License. See the [LICENSE](LICENSE) file for details.
+
+## Support & Questions
+
+If you have questions or encounter issues, please open an issue on [GitHub](https://github.com/google/adk-samples/issues).
+
+---
+
+*This is not an officially supported Google product. These agents are intended for demonstration purposes only and are not for production use.*
