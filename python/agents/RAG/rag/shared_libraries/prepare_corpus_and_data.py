@@ -1,16 +1,9 @@
-# Copyright 2025 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+"""
+Utility script for setting up a Vertex AI RAG corpus and uploading documents.
+
+This script initializes Vertex AI, creates or retrieves a RAG corpus, downloads a PDF from a URL, uploads it to the corpus, updates the .env file with the corpus name, and lists all files in the corpus. It is intended to help users prepare their environment and data for RAG-based agents.
+"""
+
 
 from google.auth import default
 import vertexai

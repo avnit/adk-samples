@@ -1,6 +1,6 @@
-# Agent Development Kit (ADK) Sample Agents
+# Security Agent with Google ADK
 
-This repository provides ready-to-use sample agents built on top of the Python [Agent Development Kit (ADK)](https://github.com/google/adk-python). These agents demonstrate a range of use cases and complexities, from fact-checking LLM outputs to retrieval-augmented generation and cloud security integrations.
+This repository provides ready-to-use sample security RAG agents (Wiz, and RAG) built on top of the Python [Agent Development Kit (ADK)](https://github.com/google/adk-python). These agents demonstrate a range of use cases and complexities, from fact-checking LLM outputs to retrieval-augmented generation and cloud security integrations.
 
 ## Repository Structure
 
