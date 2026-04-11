@@ -1,3 +1,8 @@
 {
-    "python.languageServer": "None"
+    "python.languageServer": "None",
+    "idf.espIdfPathWin": "C:\\Users\\abamb\\esp\\v5.3.1\\esp-idf",
+    "idf.toolsPathWin": "C:\\Users\\abamb\\.espressif",
+    "idf.pythonInstallPath": "C:\\Users\\abamb\\.espressif\\tools\\idf-python\\3.11.2\\python.exe",
+    "python-envs.defaultEnvManager": "ms-python.python:system",
+    "python-envs.pythonProjects": []
 }

@@ -1,0 +1,26 @@
+{
+  "mcpServers": {
+    "Wiz MCP Server": {
+      "disabled": false,
+      "timeout": 60,
+      "command": "/path/to/uv",
+      "args": [
+        "--directory",
+        "./python/agents/wiz/wiz-mcp/src/wiz_mcp_server",
+        "run",
+        "--with",
+        "mcp[cli]",
+        "mcp",
+        "run",
+        "server.py"
+      ],
+      "env": {
+        "WIZ_CLIENT_ID": "your_client_id",
+        "WIZ_CLIENT_SECRET": "your_client_secret",
+        "WIZ_DOTENV_PATH": "/path/to/.env"
+      },
+      "model": "claude-sonnet-3.5",
+      "transportType": "stdio"
+    }
+  }
+}

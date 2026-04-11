@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "Wiz MCP Server": {
+      "command": "/path/to/uv",
+      "args": [
+        "--directory",
+        "./python/agents/wiz/wiz-mcp/src/wiz_mcp_server",
+        "run",
+        "--with",
+        "mcp[cli]",
+        "mcp",
+        "run",
+        "server.py"
+      ],
+      "model": "claude-sonnet-3.5"
+    }
+  }
+}
