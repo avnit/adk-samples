@@ -1,0 +1,6 @@
+# Core auth_provider module, demo, and tests use only the Python standard
+# library -- nothing to install to run `python -m auth_provider_demo.demo`
+# or the unittest suite.
+#
+# google-adk is required only to import and run agent.py (the LlmAgent).
+google-adk>=0.1.0
