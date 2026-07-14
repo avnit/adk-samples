@@ -37,4 +37,9 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
       run: |
-        pytest
+        # pytest exit code 5 means "no tests were collected" -- this happens when
+        # every suite is skipped because optional, per-agent dependencies (e.g.
+        # google-adk, python-dotenv) are not installed in this lint/CI job. Treat
+        # that as success; any real test failure (exit 1) or collection error
+        # (exit 2) still fails the build.
+        pytest || { code=$?; [ "$code" = "5" ] && exit 0; exit "$code"; }

@@ -2,6 +2,9 @@ import os
 import requests
 import json
 from typing import Dict, Any, Optional, Union, Callable # Added Callable
+
+from google.adk.agents.callback_context import CallbackContext
+from google.adk.models import LlmResponse
 # --- Wiz API Configuration ---
 WIZ_CLIENT_ID = os.environ.get("WIZ_CLIENT_ID")
 WIZ_CLIENT_SECRET = os.environ.get("WIZ_CLIENT_SECRET")
@@ -93,26 +96,26 @@ class WizQueryAgent:
             json_body=json_body_to_send
         )
 
-        def __call__(self, callback_context: CallbackContext, llm_response: LlmResponse) -> Optional[LlmResponse]:
-            """
-            ADK callback method. Fetches Wiz data and appends it to the LlmResponse.
-            The parameter names 'callback_context' and 'llm_response' must match
-            how the ADK framework calls this callback.
-            """
-            #print(f"{self.name} (callback) received LLM response ID: {llm_response.id}. Invocation ID: {callback_context.invocation_id}") # Changed context to callback_context
+    def __call__(self, callback_context: CallbackContext, llm_response: LlmResponse) -> Optional[LlmResponse]:
+        """
+        ADK callback method. Fetches Wiz data and appends it to the LlmResponse.
+        The parameter names 'callback_context' and 'llm_response' must match
+        how the ADK framework calls this callback.
+        """
+        #print(f"{self.name} (callback) received LLM response ID: {llm_response.id}. Invocation ID: {callback_context.invocation_id}") # Changed context to callback_context
 
-            wiz_query_payload = self.default_query
-            wiz_endpoint = self.default_endpoint
-            wiz_method = self.default_method
+        wiz_query_payload = self.default_query
+        wiz_endpoint = self.default_endpoint
+        wiz_method = self.default_method
 
-            print(f"{self.name}: Using Wiz query payload: {json.dumps(wiz_query_payload)[:200]}...")
+        print(f"{self.name}: Using Wiz query payload: {json.dumps(wiz_query_payload)[:200]}...")
 
-            wiz_results = self.fetch_wiz_data(
-                endpoint=wiz_endpoint,
-                method=wiz_method,
-                payload=wiz_query_payload
-            )
-            return llm_response
+        wiz_results = self.fetch_wiz_data(
+            endpoint=wiz_endpoint,
+            method=wiz_method,
+            payload=wiz_query_payload
+        )
+        return llm_response
 
 # --- Internal Helper Functions ---
 def _get_wiz_access_token(

@@ -16,8 +16,14 @@
 
 import pathlib
 
-import dotenv
 import pytest
+
+# These evaluations require optional, heavyweight dependencies (python-dotenv
+# and google-adk) that are not installed in the lint/CI environment. Skip the
+# module cleanly when they are missing so collection does not error.
+dotenv = pytest.importorskip("dotenv")
+pytest.importorskip("google.adk")
+
 from google.adk.evaluation import AgentEvaluator
 
 pytest_plugins = ("pytest_asyncio",)
