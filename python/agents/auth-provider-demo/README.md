@@ -45,13 +45,29 @@ acting on behalf of a user. This sample generalizes that into:
 auth-provider-demo/
 ├── auth_provider_demo/
 │   ├── auth_provider.py     # core: AuthProvider, TwoLegged/ThreeLegged, Token, TokenStore
+│   ├── auth_manager.py      # AuthManager: named-authorization registry (2LO/3LO)
 │   ├── mock_oauth_server.py # dependency-free mock OAuth2 server (demo/tests)
 │   ├── tools.py             # ADK tool functions backed by the providers
 │   ├── agent.py             # ADK LlmAgent wiring both tools (needs google-adk)
 │   └── demo.py              # runnable end-to-end walkthrough (no ADK needed)
+├── notebooks/               # Gemini Enterprise demos (A2A, MCP, gateway+PSC)
+│   ├── 00_overview_auth_manager.ipynb
+│   ├── 01_agent_to_agent_auth.ipynb
+│   ├── 02_agent_to_mcp_auth.ipynb
+│   └── 03_agent_gateway_psc.ipynb
 └── tests/
-    └── test_auth_provider.py
+    ├── test_auth_provider.py
+    └── test_auth_manager.py
 ```
+
+## Notebooks — Gemini Enterprise: A2A, MCP, and gateway + PSC
+
+The [`notebooks/`](notebooks/) folder demonstrates the auth manager driving
+real Gemini Enterprise integration surfaces — **agent-to-agent (A2A)**,
+**agent-to-MCP**, and a **private agent gateway over Private Service Connect
+(PSC)** — each runnable fully offline against the bundled mock servers, with the
+production ADK / Vertex AI mapping alongside. See the
+[notebooks README](notebooks/README.md).
 
 ## Run the demo (no dependencies, no ADK, no network)
 
