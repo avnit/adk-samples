@@ -73,3 +73,24 @@ If you have questions or encounter issues, please open an issue on [GitHub](http
 ---
 
 *This is not an officially supported Google product. These agents are intended for demonstration purposes only and are not for production use.*
+
+<!-- ARCH-DIAGRAM:START -->
+
+## Architecture
+
+> Auto-generated architecture diagram. See [`docs/context-map.md`](docs/context-map.md) for the full context map (core application, containers/cloud, and database connections).
+
+```mermaid
+flowchart TD
+  User([User / Client])
+  App["adk-samples<br/><small>agent.py</small><br/>Application"]
+  AI["Vertex AI / Gemini<br/>(LLM / Agent Engine)"]
+  SVC0["Cloudflare Workers"]
+  Img["Container image<br/>(Docker)"]
+  User --> App
+  App --> AI
+  App --> SVC0
+  App -.deploy.-> Img
+```
+
+<!-- ARCH-DIAGRAM:END -->
