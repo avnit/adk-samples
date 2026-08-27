@@ -43,6 +43,25 @@ python -m ipykernel install --user --name python3
 jupyter notebook notebooks/        # or: jupyter lab notebooks/
 ```
 
+### Dependencies for the production cells
+
+The **runnable** cells need nothing beyond the standard library. To run the
+`RUN_PRODUCTION` cells (or copy the ADK snippets into your own project), install
+ADK **with the `a2a` and `mcp` extras** — base `google-adk` installs neither:
+
+```bash
+pip install "google-adk[a2a,mcp]"
+```
+
+These extras carry the versions ADK requires (`a2a-sdk>=0.3.4,<2` and
+`mcp>=1.24,<2`). Common failures without them:
+
+| Symptom | Cause | Fix |
+|---------|-------|-----|
+| `ModuleNotFoundError: No module named 'a2a'` | `google-adk[a2a]` not installed | install the `a2a` extra |
+| `No module named 'mcp.shared.session'` | a bare `pip install mcp` pulled `mcp` 2.x | install the `mcp` extra (pins `<2`) |
+| `MCPToolset ... deprecated` warning | old class name | use `McpToolset` |
+
 Or re-execute headless to verify:
 
 ```bash
