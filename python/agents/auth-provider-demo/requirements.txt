@@ -4,3 +4,10 @@
 #
 # google-adk is required only to import and run agent.py (the LlmAgent).
 google-adk>=0.1.0
+
+# The notebooks/ production cells (A2A + MCP + gateway) additionally need the
+# ADK "a2a" and "mcp" extras, which base google-adk does NOT install. The extras
+# carry the correct pins (a2a-sdk>=0.3.4,<2 and mcp>=1.24,<2); installing a bare
+# `mcp` pulls the incompatible 2.x line. Uncomment to run those cells:
+#   google-adk[a2a,mcp]>=1.0.0
+#   jupyter
