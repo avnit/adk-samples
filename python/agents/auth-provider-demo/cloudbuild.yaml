@@ -1,0 +1,74 @@
+# Cloud Build configuration for auth-provider-demo
+# Deploy to Google Cloud Run with environment configuration
+
+steps:
+  # Step 1: Build the Docker image
+  - name: "gcr.io/cloud-builders/docker"
+    id: "build"
+    args:
+      - "build"
+      - "-t"
+      - "gcr.io/$PROJECT_ID/auth-provider-demo:$SHORT_SHA"
+      - "-t"
+      - "gcr.io/$PROJECT_ID/auth-provider-demo:latest"
+      - "--build-arg"
+      - "BUILDKIT_INLINE_CACHE=1"
+      - "."
+    dir: "python/agents/auth-provider-demo"
+
+  # Step 2: Push to Artifact Registry or Container Registry
+  - name: "gcr.io/cloud-builders/docker"
+    id: "push"
+    args:
+      - "push"
+      - "gcr.io/$PROJECT_ID/auth-provider-demo:$SHORT_SHA"
+
+  # Step 3: Deploy to Cloud Run
+  - name: "gcr.io/cloud-builders/run"
+    id: "deploy"
+    args:
+      - "deploy"
+      - "auth-provider-demo"
+      - "--image"
+      - "gcr.io/$PROJECT_ID/auth-provider-demo:$SHORT_SHA"
+      - "--region"
+      - "${_REGION}"
+      - "--platform"
+      - "managed"
+      - "--allow-unauthenticated"
+      - "--memory"
+      - "${_MEMORY}"
+      - "--cpu"
+      - "${_CPU}"
+      - "--timeout"
+      - "${_TIMEOUT}"
+      - "--max-instances"
+      - "100"
+      - "--min-instances"
+      - "1"
+      - "--port"
+      - "8080"
+      - "--set-env-vars"
+      - "PORT=8080"
+
+images:
+  - "gcr.io/$PROJECT_ID/auth-provider-demo:$SHORT_SHA"
+  - "gcr.io/$PROJECT_ID/auth-provider-demo:latest"
+
+options:
+  machineType: "N1_HIGHCPU_8"
+  logging: CLOUD_LOGGING_ONLY
+  substitution_option: "ALLOW_LOOSE"
+
+substitutions:
+  _REGION: "us-central1"
+  _MEMORY: "512Mi"
+  _CPU: "1"
+  _TIMEOUT: "3600"
+
+timeout: "1800s"
+
+tags:
+  - "auth-provider-demo"
+  - "cloud-run"
+  - "gke"
